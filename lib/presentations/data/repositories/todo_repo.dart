@@ -6,7 +6,7 @@ import '../models/task_model.dart';
 
 class TodoRepo {
 
-  static void saveTask(TaskModel task) async {
+  static Future<void> saveTask(TaskModel task) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> taskStrings = prefs.getStringList('tasks') ?? [];
     taskStrings.add(jsonEncode(task.toJson()));
