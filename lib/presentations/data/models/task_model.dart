@@ -43,7 +43,7 @@ class TaskModel extends Equatable {
       'priority': priority.name,
       'date': date.toIso8601String(),
       'isCompleted': isCompleted,
-      'createdOn': createdOn.toIso8601String()
+      'createdOn': createdOn.toIso8601String(),
     };
   }
 
@@ -58,6 +58,26 @@ class TaskModel extends Equatable {
       default:
         return Priority.mid;
     }
+  }
+
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    Priority? priority,
+    DateTime? date,
+    bool? isCompleted,
+    DateTime? createdOn,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      priority: priority ?? this.priority,
+      date: date ?? this.date,
+      isCompleted: isCompleted ?? this.isCompleted,
+      createdOn: createdOn ?? this.createdOn,
+    );
   }
 
   @override

@@ -23,7 +23,7 @@ class _TasksScreenState extends State<TasksScreen> {
             return ListView.builder(
               itemCount: state.tasks.length,
               itemBuilder: (context, index) =>
-                  TaskTile(task: state.tasks[index]),
+                  TaskTile(task: state.tasks[index], onToggleComplete: () => context.read<TodoBloc>().add(MarkTaskAsComplete(task: state.tasks[index])),),
             );
           } else {
             return SizedBox.shrink();

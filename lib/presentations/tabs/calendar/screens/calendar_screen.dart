@@ -137,6 +137,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             itemCount: getTaskOfDay(state.tasks).length,
                             itemBuilder: (context, index) => TaskTile(
                               task: getTaskOfDay(state.tasks)[index],
+                              onToggleComplete: () => context.read<TodoBloc>().add(MarkTaskAsComplete(task: getTaskOfDay(state.tasks)[index]))
                             ),
                           ),
                   ),

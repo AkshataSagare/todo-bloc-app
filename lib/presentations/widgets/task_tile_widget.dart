@@ -21,10 +21,10 @@ class TaskTile extends StatefulWidget {
   State<TaskTile> createState() => _TaskTileState();
 }
 
-class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin {
+class _TaskTileState extends State<TaskTile>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -33,13 +33,9 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.98,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.98).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -51,11 +47,11 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
   Color _getPriorityColor(Priority priority) {
     switch (priority) {
       case Priority.high:
-        return const Color(0xFFE57373); // Softer red
+        return const Color(0xFFE57373);
       case Priority.mid:
-        return const Color(0xFFFF9800); // Orange
+        return const Color(0xFFFF9800);
       case Priority.low:
-        return const Color(0xFF4CAF50); // Green
+        return const Color(0xFF4CAF50);
     }
   }
 
@@ -85,7 +81,7 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final taskDate = DateTime(date.year, date.month, date.day);
-    
+
     if (taskDate == today) {
       return 'Today';
     } else if (taskDate == today.add(const Duration(days: 1))) {
@@ -100,29 +96,29 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
   bool _isOverdue() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final taskDate = DateTime(widget.task.date.year, widget.task.date.month, widget.task.date.day);
+    final taskDate = DateTime(
+      widget.task.date.year,
+      widget.task.date.month,
+      widget.task.date.day,
+    );
     return taskDate.isBefore(today) && !widget.task.isCompleted;
   }
 
   Widget _buildPriorityChip() {
     final priority = widget.task.priority;
     final color = _getPriorityColor(priority);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.6), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.6), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            _getPriorityIcon(priority),
-            size: 14,
-            color: color,
-          ),
+          Icon(_getPriorityIcon(priority), size: 14, color: color),
           const SizedBox(width: 4),
           Text(
             _getPriorityLabel(priority),
@@ -140,21 +136,23 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
 
   Widget _buildDateChip() {
     final isOverdue = _isOverdue();
-    final dateColor = isOverdue 
+    final dateColor = isOverdue
         ? const Color(0xFFE57373)
         : Theme.of(context).colorScheme.onSurfaceVariant;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: isOverdue 
-            ? const Color(0xFFE57373).withOpacity(0.15)
-            : Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.8),
+        color: isOverdue
+            ? const Color(0xFFE57373).withValues(alpha: 0.15)
+            : Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: isOverdue 
-              ? const Color(0xFFE57373).withOpacity(0.4)
-              : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+          color: isOverdue
+              ? const Color(0xFFE57373).withValues(alpha: 0.4)
+              : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -185,9 +183,12 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color(0xFF4CAF50).withOpacity(0.2),
+          color: const Color(0xFF4CAF50).withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFF4CAF50).withOpacity(0.5), width: 1),
+          border: Border.all(
+            color: const Color(0xFF4CAF50).withValues(alpha: 0.5),
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -214,18 +215,17 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color(0xFFE57373).withOpacity(0.2),
+          color: const Color(0xFFE57373).withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xFFE57373).withOpacity(0.5), width: 1),
+          border: Border.all(
+            color: const Color(0xFFE57373).withValues(alpha: 0.5),
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.error_rounded,
-              size: 14,
-              color: const Color(0xFFE57373),
-            ),
+            Icon(Icons.error_rounded, size: 14, color: const Color(0xFFE57373)),
             const SizedBox(width: 4),
             Text(
               'OVERDUE',
@@ -258,16 +258,12 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
           border: Border.all(
             color: widget.task.isCompleted
                 ? _getPriorityColor(widget.task.priority)
-                : Theme.of(context).colorScheme.outline.withOpacity(0.6),
+                : Theme.of(context).colorScheme.outline.withValues(alpha: 0.6),
             width: 2,
           ),
         ),
         child: widget.task.isCompleted
-            ? const Icon(
-                Icons.check_rounded,
-                size: 16,
-                color: Colors.white,
-              )
+            ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
             : null,
       ),
     );
@@ -277,7 +273,7 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isOverdue = _isOverdue();
-    
+
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -286,16 +282,18 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              color: widget.task.isCompleted 
-                  ? theme.colorScheme.surfaceVariant.withOpacity(0.6)
+              color: widget.task.isCompleted
+                  ? theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: 0.6,
+                    )
                   : theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: widget.task.isCompleted
-                    ? theme.colorScheme.outline.withOpacity(0.4)
+                    ? theme.colorScheme.outline.withValues(alpha: 0.4)
                     : isOverdue
-                        ? const Color(0xFFE57373).withOpacity(0.6)
-                        : theme.colorScheme.outline.withOpacity(0.3),
+                    ? const Color(0xFFE57373).withValues(alpha: 0.6)
+                    : theme.colorScheme.outline.withValues(alpha: 0.3),
                 width: 1.5,
               ),
             ),
@@ -303,25 +301,12 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
-                onTap: widget.onEdit,
-                onTapDown: (_) {
-                  setState(() => _isPressed = true);
-                  _animationController.forward();
-                },
-                onTapUp: (_) {
-                  setState(() => _isPressed = false);
-                  _animationController.reverse();
-                },
-                onTapCancel: () {
-                  setState(() => _isPressed = false);
-                  _animationController.reverse();
-                },
+
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Header row with checkbox and actions
                       Row(
                         children: [
                           _buildCheckbox(),
@@ -330,24 +315,24 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Title
                                 Text(
                                   widget.task.title,
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
-                                    decoration: widget.task.isCompleted 
-                                        ? TextDecoration.lineThrough 
+                                    decoration: widget.task.isCompleted
+                                        ? TextDecoration.lineThrough
                                         : null,
                                     color: widget.task.isCompleted
-                                        ? theme.colorScheme.onSurface.withOpacity(0.6)
+                                        ? theme.colorScheme.onSurface
+                                              .withValues(alpha: 0.6)
                                         : theme.colorScheme.onSurface,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 6),
-                                // Description
+
                                 if (widget.task.description.isNotEmpty)
                                   Text(
                                     widget.task.description,
@@ -355,10 +340,11 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: widget.task.isCompleted
-                                          ? theme.colorScheme.onSurfaceVariant.withOpacity(0.6)
+                                          ? theme.colorScheme.onSurfaceVariant
+                                                .withValues(alpha: 0.6)
                                           : theme.colorScheme.onSurfaceVariant,
-                                      decoration: widget.task.isCompleted 
-                                          ? TextDecoration.lineThrough 
+                                      decoration: widget.task.isCompleted
+                                          ? TextDecoration.lineThrough
                                           : null,
                                       height: 1.4,
                                     ),
@@ -369,12 +355,14 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
                             ),
                           ),
                           const SizedBox(width: 12),
-                          // Action buttons
+
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Material(
-                                color: theme.colorScheme.primary.withOpacity(0.1),
+                                color: theme.colorScheme.primary.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(12),
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(12),
@@ -391,7 +379,9 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
                               ),
                               const SizedBox(width: 8),
                               Material(
-                                color: const Color(0xFFE57373).withOpacity(0.1),
+                                color: const Color(
+                                  0xFFE57373,
+                                ).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(12),
@@ -410,10 +400,9 @@ class _TaskTileState extends State<TaskTile> with SingleTickerProviderStateMixin
                           ),
                         ],
                       ),
-                      
+
                       const SizedBox(height: 16),
-                      
-                      // Footer with chips
+
                       Row(
                         children: [
                           _buildPriorityChip(),
