@@ -17,8 +17,13 @@ final class TodoLoading extends TodoState {
 
 final class TodoLoaded extends TodoState {
   final List<TaskModel> tasks;
-
-  const TodoLoaded({required this.tasks});
+  final String? successMessage;
+  final String? errorMessage;
+  const TodoLoaded({
+    this.successMessage,
+    this.errorMessage,
+    required this.tasks,
+  });
 
   @override
   List<Object> get props => [tasks];

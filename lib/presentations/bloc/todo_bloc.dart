@@ -26,9 +26,15 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<CreateTask>((event, emit) async {
       try {
         await TodoRepo.saveTask(event.task).then((_) {
-          final List<TaskModel> updatedTasks = List<TaskModel>.from(tasks)..add(event.task);
+          final List<TaskModel> updatedTasks = List<TaskModel>.from(tasks)
+            ..add(event.task);
           tasks = updatedTasks;
-          emit(TodoLoaded(tasks: updatedTasks));
+          emit(
+            TodoLoaded(
+              tasks: updatedTasks,
+              successMessage: "Created a new task",
+            ),
+          );
         });
       } catch (e) {
         log(e.toString());
@@ -48,7 +54,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         await TodoRepo.editTask(event.task).then((updatedTasks) {
           tasks = updatedTasks;
-          emit(TodoLoaded(tasks: updatedTasks));
+          emit(
+            TodoLoaded(
+              tasks: updatedTasks,
+              successMessage: "Updated task details",
+            ),
+          );
         });
       } catch (e) {
         log(e.toString());
@@ -58,12 +69,11 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         await TodoRepo.deleteTask(event.task).then((updatedTasks) {
           tasks = updatedTasks;
-          emit(TodoLoaded(tasks: updatedTasks));
+          emit(TodoLoaded(tasks: updatedTasks, successMessage: "Task deleted"));
         });
       } catch (e) {
         log(e.toString());
       }
     });
-
   }
 }
