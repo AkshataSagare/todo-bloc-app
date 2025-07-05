@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_bloc/presentations/bloc/todo_bloc.dart';
+import 'package:todo_bloc/presentations/widgets/delete_dialog_widget.dart';
 import 'package:todo_bloc/presentations/widgets/task_tile_widget.dart';
 
 import '../../../widgets/dialog_widget.dart';
@@ -25,6 +26,7 @@ class _TasksScreenState extends State<TasksScreen> {
             return ListView.builder(
               itemCount: state.tasks.length,
               itemBuilder: (context, index) => TaskTile(
+                key: ValueKey(state.tasks[index].id),
                 task: state.tasks[index],
                 onToggleComplete: () => context.read<TodoBloc>().add(
                   MarkTaskAsComplete(task: state.tasks[index]),
@@ -36,6 +38,15 @@ class _TasksScreenState extends State<TasksScreen> {
                     onSubmit: (task) {
                       context.read<TodoBloc>().add(EditTask(task: task));
                     },
+                  ),
+                ),
+                onDelete: () => showDialog(
+                  context: context,
+                  builder: (context) => DeleteTaskConfirmationDialog(
+                    taskTitle: state.tasks[index].title,
+                    onDelete: () =>
+                      context.read<TodoBloc>().add(DeleteTask(task: state.tasks[index] ))
+                    
                   ),
                 ),
               ),

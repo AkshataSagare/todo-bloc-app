@@ -57,4 +57,19 @@ class TodoRepo {
     );
     return tasks;
   }
+  static Future<List<TaskModel>> deleteTask(TaskModel task) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<TaskModel> tasks = (prefs.getStringList('tasks') ?? [])
+        .map((taskString) => TaskModel.fromJson(jsonDecode(taskString)))
+        .toList();
+
+    tasks.removeWhere((dt) => dt.id == task.id); 
+    
+
+     prefs.setStringList(
+      'tasks',
+      tasks.map((t) => jsonEncode(t.toJson())).toList(),
+    );
+    return tasks;
+  }
 }

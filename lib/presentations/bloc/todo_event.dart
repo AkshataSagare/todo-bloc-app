@@ -23,3 +23,9 @@ final class EditTask extends TodoEvent {
 
   EditTask({required this.task});
 }
+final class DeleteTask extends TodoEvent {
+  final TaskModel task;
+
+  DeleteTask({required this.task});
+}
+

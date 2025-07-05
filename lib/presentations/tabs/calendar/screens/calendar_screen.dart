@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_bloc/presentations/bloc/todo_bloc.dart';
 import 'package:todo_bloc/presentations/data/models/task_model.dart';
 
+import '../../../widgets/delete_dialog_widget.dart';
 import '../../../widgets/dialog_widget.dart';
 import '../../../widgets/task_tile_widget.dart';
 
@@ -154,6 +155,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     );
                                   },
                                 ),
+                              ),
+                              onDelete: () => showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    DeleteTaskConfirmationDialog(
+                                      taskTitle: state.tasks[index].title,
+                                      onDelete: () =>
+                                          context.read<TodoBloc>().add(
+                                            DeleteTask(
+                                              task: getTaskOfDay(
+                                                state.tasks,
+                                              )[index],
+                                            ),
+                                          ),
+                                    ),
                               ),
                             ),
                           ),
