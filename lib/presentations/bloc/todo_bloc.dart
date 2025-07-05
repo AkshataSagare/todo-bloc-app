@@ -44,5 +44,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         log(e.toString());
       }
     });
+    on<EditTask>((event, emit) async {
+      try {
+        await TodoRepo.editTask(event.task).then((updatedTasks) {
+          tasks = updatedTasks;
+          emit(TodoLoaded(tasks: updatedTasks));
+        });
+      } catch (e) {
+        log(e.toString());
+      }
+    });
+
   }
 }

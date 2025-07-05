@@ -39,4 +39,22 @@ class TodoRepo {
     );
     return tasks;
   }
+
+  static Future<List<TaskModel>> editTask(TaskModel task) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<TaskModel> tasks = (prefs.getStringList('tasks') ?? [])
+        .map((taskString) => TaskModel.fromJson(jsonDecode(taskString)))
+        .toList();
+
+    final index = tasks.indexWhere((et) => et.id == task.id);
+    
+      tasks[index] = task;
+    
+
+     prefs.setStringList(
+      'tasks',
+      tasks.map((t) => jsonEncode(t.toJson())).toList(),
+    );
+    return tasks;
+  }
 }

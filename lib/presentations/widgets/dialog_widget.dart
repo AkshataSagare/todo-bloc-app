@@ -2,25 +2,37 @@ import 'package:flutter/material.dart';
 
 import '../data/models/task_model.dart';
 
-class CreateTaskDialog extends StatefulWidget {
-  final Function(TaskModel) onTaskCreated;
+class CreateAndEditTaskDialog extends StatefulWidget {
+  final Function(TaskModel) onSubmit;
+  final TaskModel? taskModel;
 
-  const CreateTaskDialog({
+  const CreateAndEditTaskDialog({
     super.key,
-    required this.onTaskCreated,
+    this.taskModel,
+    required this.onSubmit,
   });
 
   @override
-  State<CreateTaskDialog> createState() => _CreateTaskDialogState();
+  State<CreateAndEditTaskDialog> createState() => _CreateAndEditTaskDialogState();
 }
 
-class _CreateTaskDialogState extends State<CreateTaskDialog> {
+class _CreateAndEditTaskDialogState extends State<CreateAndEditTaskDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  
-  Priority _selectedPriority = Priority.mid;
-  DateTime _selectedDate = DateTime.now();
+
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+  late Priority _selectedPriority;
+  late DateTime _selectedDate;
+
+    @override
+  void initState() {
+    _titleController = TextEditingController(text:  widget.taskModel?.title );
+    _descriptionController = TextEditingController(text:  widget.taskModel?.description );
+    _selectedPriority = widget.taskModel?.priority ??  Priority.mid;
+    _selectedDate = widget.taskModel?.date ?? DateTime.now();
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -78,14 +90,16 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
   void _createTask() {
     if (_formKey.currentState!.validate()) {
       final task = TaskModel(
+        id: widget.taskModel?.id,
+        createdOn: widget.taskModel?.createdOn,
         title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
         priority: _selectedPriority,
         date: _selectedDate,
-        isCompleted: false,
+        isCompleted: widget.taskModel?.isCompleted?? false,
       );
       
-      widget.onTaskCreated(task);
+      widget.onSubmit(task);
       Navigator.of(context).pop();
     }
   }
@@ -137,13 +151,13 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Create New Task',
+                              '${widget.taskModel != null? 'Edit' : 'Create New'} Task',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              'Fill in the details below',
+                              '${widget.taskModel != null? 'Edit' : 'Fill in'} the details below',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
@@ -348,7 +362,7 @@ class _CreateTaskDialogState extends State<CreateTaskDialog> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          child: const Text('Create Task'),
+                          child:  Text("${widget.taskModel != null? 'Save' : 'Create'} Task"),
                         ),
                       ),
                     ],

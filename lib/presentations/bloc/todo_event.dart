@@ -17,3 +17,9 @@ final class MarkTaskAsComplete extends TodoEvent{
 
   MarkTaskAsComplete({required this.task});
 }
+
+final class EditTask extends TodoEvent {
+  final TaskModel task;
+
+  EditTask({required this.task});
+}

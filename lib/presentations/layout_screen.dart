@@ -4,7 +4,7 @@ import 'package:todo_bloc/presentations/bloc/todo_bloc.dart';
 import 'package:todo_bloc/presentations/tabs/calendar/screens/calendar_screen.dart';
 import 'package:todo_bloc/presentations/tabs/tasks/screens/tasks_screen.dart';
 
-import 'widgets/dialog_widget.dart' show CreateTaskDialog;
+import 'widgets/dialog_widget.dart' show CreateAndEditTaskDialog;
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});
@@ -65,8 +65,8 @@ class _LayoutScreenState extends State<LayoutScreen> {
   void _showCreateTaskDialog() {
     showDialog(
       context: context,
-      builder: (context) => CreateTaskDialog(
-        onTaskCreated: (task) {
+      builder: (context) => CreateAndEditTaskDialog(
+        onSubmit: (task) {
           context.read<TodoBloc>().add(CreateTask(task: task));
     
         },

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_bloc/presentations/bloc/todo_bloc.dart';
 import 'package:todo_bloc/presentations/widgets/task_tile_widget.dart';
 
+import '../../../widgets/dialog_widget.dart';
+
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
 
@@ -22,8 +24,21 @@ class _TasksScreenState extends State<TasksScreen> {
           } else if (state is TodoLoaded) {
             return ListView.builder(
               itemCount: state.tasks.length,
-              itemBuilder: (context, index) =>
-                  TaskTile(task: state.tasks[index], onToggleComplete: () => context.read<TodoBloc>().add(MarkTaskAsComplete(task: state.tasks[index])),),
+              itemBuilder: (context, index) => TaskTile(
+                task: state.tasks[index],
+                onToggleComplete: () => context.read<TodoBloc>().add(
+                  MarkTaskAsComplete(task: state.tasks[index]),
+                ),
+                onEdit: () => showDialog(
+                  context: context,
+                  builder: (context) => CreateAndEditTaskDialog(
+                    taskModel: state.tasks[index],
+                    onSubmit: (task) {
+                      context.read<TodoBloc>().add(EditTask(task: task));
+                    },
+                  ),
+                ),
+              ),
             );
           } else {
             return SizedBox.shrink();

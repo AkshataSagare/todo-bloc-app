@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_bloc/presentations/bloc/todo_bloc.dart';
 import 'package:todo_bloc/presentations/data/models/task_model.dart';
 
+import '../../../widgets/dialog_widget.dart';
 import '../../../widgets/task_tile_widget.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -137,7 +138,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             itemCount: getTaskOfDay(state.tasks).length,
                             itemBuilder: (context, index) => TaskTile(
                               task: getTaskOfDay(state.tasks)[index],
-                              onToggleComplete: () => context.read<TodoBloc>().add(MarkTaskAsComplete(task: getTaskOfDay(state.tasks)[index]))
+                              onToggleComplete: () =>
+                                  context.read<TodoBloc>().add(
+                                    MarkTaskAsComplete(
+                                      task: getTaskOfDay(state.tasks)[index],
+                                    ),
+                                  ),
+                              onEdit: () => showDialog(
+                                context: context,
+                                builder: (context) => CreateAndEditTaskDialog(
+                                  taskModel: getTaskOfDay(state.tasks)[index],
+                                  onSubmit: (task) {
+                                    context.read<TodoBloc>().add(
+                                      EditTask(task: task),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                   ),
