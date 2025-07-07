@@ -77,25 +77,43 @@ flutter run
 ```
 lib/
 ├── main.dart
-├── models/
-│   └── task.dart
-├── bloc/
-│   ├── task_bloc.dart
-│   ├── task_event.dart
-│   └── task_state.dart
-├── screens/
-│   ├── home_screen.dart
-│   └── calendar_screen.dart
-├── widgets/
-│   ├── task_item.dart
-│   ├── task_dialog.dart
-│   └── filter_bottom_sheet.dart
-└── services/
-    └── storage_service.dart
+│
+├── core/
+│   ├── app_themes/
+│   │   └── app_themes.dart
+│   └── utilities/
+│       └── snackbars.dart
+│
+├── presentations/
+│   ├── bloc/
+│   │   ├── todo_bloc.dart
+│   │   ├── todo_event.dart
+│   │   └── todo_state.dart
+│   │
+│   ├── data/
+│   │   ├── models/
+│   │   │   ├── enums.dart
+│   │   │   └── task_model.dart
+│   │   └── repositories/
+│   │       └── todo_repo.dart
+│   │
+│   ├── tabs/
+│   │   ├── calendar/screens/
+│   │   │   └── calendar_screen.dart
+│   │   └── tasks/screens/
+│   │       └── tasks_screen.dart
+│   │
+│   ├── widgets/
+│   │   ├── delete_dialog_widget.dart
+│   │   ├── dialog_widget.dart
+│   │   ├── filter_bottom_sheet.dart
+│   │   ├── sort_bottom_sheet.dart
+│   │   └── task_tile_widget.dart
+│   │
+│   └── layout_screen.dart
 ```
 
 ---
-
 ## 🛠️ Technologies Used
 
 - **Flutter**: Cross-platform mobile app development
@@ -145,12 +163,6 @@ No additional configuration required.
 
 ### iOS
 No additional configuration required.
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
